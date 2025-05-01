@@ -1,10 +1,13 @@
-from fastapi import FastAPI
-from fastapi import FastAPI, File, UploadFile
-from typing import Annotated
 import os
 import shutil
+from typing import Annotated
+
+from fastapi import FastAPI, File, UploadFile
+
+from ConvertToMarkdown import ConvertToMarkdown
 
 app = FastAPI()
+
 
 @app.post("/files/")
 async def create_file(file: Annotated[UploadFile, File()]):
@@ -15,7 +18,10 @@ async def create_file(file: Annotated[UploadFile, File()]):
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
+    res = await ConvertToMarkdown(file_path)
+
     return {"filename": file.filename, "saved_to": file_path}
+
 
 @app.get("/")
 async def root():

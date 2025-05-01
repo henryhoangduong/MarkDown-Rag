@@ -1,8 +1,14 @@
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
+
 
 class EmbeddingManager:
-    def __init__(self, documents, persist_directory, model_name="mixedbread-ai/mxbai-embed-large-v1"):
+    def __init__(
+        self,
+        documents,
+        persist_directory,
+        model_name="mixedbread-ai/mxbai-embed-large-v1",
+    ):
         self.documents = documents
         self.persist_directory = persist_directory
         self.vectordb = None

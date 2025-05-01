@@ -6,6 +6,7 @@ backend/dist/
 backend/wheels/
 backend/*.egg-info
 backend/backend/node_modules/
+backend/markdown
 
 # Virtual environments
 backend/.venv
