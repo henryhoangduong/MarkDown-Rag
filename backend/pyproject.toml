@@ -13,6 +13,7 @@ dependencies = [
     "langchain-community>=0.3.23",
     "langchain-huggingface>=0.1.2",
     "marker-pdf>=1.6.2",
+    "mistletoe>=1.4.0",
     "pandas>=2.2.3",
     "torch>=2.7.0",
     "transformers>=4.51.3",
