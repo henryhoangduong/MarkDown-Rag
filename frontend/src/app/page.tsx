@@ -7,6 +7,7 @@ import { ChatBubbleAction } from "@/components/ui/chat/chat-bubble";
 import { ChatBubbleMessage } from "@/components/ui/chat/chat-bubble";
 import { ChatInput } from "@/components/ui/chat/chat-input";
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
+import MessageLoading from "@/components/ui/chat/message-loading";
 import useChatStore from "@/hooks/useChatStore";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -42,12 +43,7 @@ export default function Page() {
   const input = useChatStore((state) => state.input);
   const setInput = useChatStore((state) => state.setInput);
   const handleInputChange = useChatStore((state) => state.handleInputChange);
-  const hasInitialAIResponse = useChatStore(
-    (state) => state.hasInitialAIResponse,
-  );
-  const setHasInitialAIResponse = useChatStore(
-    (state) => state.setHasInitialAIResponse,
-  );
+
   const [isLoading, setisLoading] = useState(false);
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -70,7 +66,8 @@ export default function Page() {
     }
   };
 
-  const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
+    setisLoading(true);
     e.preventDefault();
     if (!input) return;
 
@@ -84,56 +81,29 @@ export default function Page() {
         message: input,
       },
     ]);
-
     setInput("");
     formRef.current?.reset();
-  };
-
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-
-    // Simulate AI response
-    if (!hasInitialAIResponse) {
-      setisLoading(true);
-      setTimeout(() => {
-        setMessages((messages) => [
-          ...messages.slice(0, messages.length - 1),
+    const res = await fetch("/api/chat/files", {
+      method: "POST",
+    });
+    const data = await res.json()
+    if (data.response) {
+      setMessages((messages) => [
+        ...messages,
           {
             id: messages.length + 1,
             avatar: "",
             name: "ChatBot",
             role: "ai",
-            message: "Sure! If you have any more questions, feel free to ask.",
+            message: data.response.answer,
           },
         ]);
-        setisLoading(false);
-        setHasInitialAIResponse(true);
-      }, 2500);
     }
-  }, []);
+    setisLoading(false)
+  };
 
   const handleClick = () => {
     inputRef.current?.click();
-  };
-
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const res = await fetch("/api/files", {
-        method: "POST",
-        body: formData,
-      });
-      if (res.status == 200) {
-        toast.success("File uploaded");
-      }
-    }
   };
   return (
     <div className="flex h-full w-full flex-col">
@@ -206,6 +176,10 @@ export default function Page() {
                 </motion.div>
               );
             })}
+            {isLoading && 
+              <div className="ml-5 flex items-center space-x-2">
+                <MessageLoading />
+              </div>}
           </AnimatePresence>
         </ChatMessageList>
       </div>
@@ -223,12 +197,6 @@ export default function Page() {
             className="min-h-12 resize-none rounded-lg bg-background border-0 p-3 shadow-none focus-visible:ring-0"
           />
           <div className="flex items-center p-3 pt-0">
-            <input
-              type="file"
-              ref={inputRef}
-              onChange={handleFileChange}
-              style={{ display: "none" }}
-            />
             <Button variant="ghost" size="icon" onClick={handleClick}>
               <Paperclip className="size-4" />
               <span className="sr-only">Attach file</span>
@@ -243,7 +211,7 @@ export default function Page() {
               disabled={!input || isLoading}
               type="submit"
               size="sm"
-              className="ml-auto gap-1.5"
+              className="ml-auto gap-1.5 cursor-pointer"
             >
               Send Message
               <CornerDownLeft className="size-3.5" />

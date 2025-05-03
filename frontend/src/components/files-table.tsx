@@ -83,7 +83,7 @@ const FileRow = (data: any) => {
       <TableCell className="font-medium">{data.data.name}</TableCell>
       <TableCell className="text-center">Embedded</TableCell>
       <TableCell className="text-center">Today</TableCell>
-      <TableCell  className="text-center">
+      <TableCell className="text-center">
         <FileActionDropDown />
       </TableCell>
     </TableRow>

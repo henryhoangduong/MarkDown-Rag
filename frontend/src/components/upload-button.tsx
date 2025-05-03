@@ -41,24 +41,32 @@ const UploadButton = () => {
   const fileRef = form.register("file");
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    toast.loading(`File uploading ${values.file[0].name}`, { id: `upload-file ${values.file[0].name}` });
+    toast.loading(`File uploading ${values.file[0].name}`, {
+      id: `upload-file ${values.file[0].name}`,
+    });
     try {
       const formData = new FormData();
       formData.append("file", values.file[0]);
+      setIsFileDialOpen(false);
       const res = await fetch("/api/files", {
         method: "POST",
         body: formData,
       });
       form.reset();
-      setIsFileDialOpen(false);
       if (res.status == 200) {
-        toast.success(`File ${values.file[0].name} has been uploaded.`, { id: `upload-file ${values.file[0].name}` });
+        toast.success(`File ${values.file[0].name} has been uploaded.`, {
+          id: `upload-file ${values.file[0].name}`,
+        });
       } else {
-        toast.error(`File ${values.file[0].name} could not be uploaded.`, { id: `upload-file ${values.file[0].name}` });
+        toast.error(`File ${values.file[0].name} could not be uploaded.`, {
+          id: `upload-file ${values.file[0].name}`,
+        });
       }
     } catch (error) {
       console.log(error);
-      toast.error(`File ${values.file[0].name} could not be uploaded.`, { id: `upload-file ${values.file[0].name}` });
+      toast.error(`File ${values.file[0].name} could not be uploaded.`, {
+        id: `upload-file ${values.file[0].name}`,
+      });
     }
   }
   return (
