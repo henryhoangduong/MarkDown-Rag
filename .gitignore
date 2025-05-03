@@ -7,7 +7,7 @@ backend/wheels/
 backend/*.egg-info
 backend/backend/node_modules/
 backend/markdown
-
+backend/.env
 # Virtual environments
 backend/.venv
 

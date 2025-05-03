@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   const forwardFormData = new FormData();
   forwardFormData.append("file", file);
 
-  const res = await fetch(`${process.env.NEXT_API_URL}/files/`, {
+  const res = await fetch(`${process.env.NEXT_API_URL}/files`, {
     method: "POST",
     body: forwardFormData,
   });
