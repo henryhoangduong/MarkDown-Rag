@@ -50,13 +50,14 @@ async def ConvertToMarkdown(fpath: str):
     except Exception as e:
         print("Error converting markdown: ", e)
         return False
-    
+
+
 # Chunk markdown file by title and return as dataframe
-async def ChunkByMarkdown(fpath:str):
+async def ChunkByMarkdown(fpath: str):
     print(fpath)
-    with open(fpath, 'r', encoding='utf-8') as f:
+    with open(fpath, "r", encoding="utf-8") as f:
         content = f.read()
-    
+
     document = mistletoe.Document(content)
 
     rows = []
@@ -64,13 +65,14 @@ async def ChunkByMarkdown(fpath:str):
     current_heading = None
     current_level = None
     buffer = []
+
     def extract_text(node):
-        if hasattr(node, 'content'):
+        if hasattr(node, "content"):
             return node.content
-        elif hasattr(node, 'children'):
-            return ''.join(extract_text(child) for child in node.children)
+        elif hasattr(node, "children"):
+            return "".join(extract_text(child) for child in node.children)
         else:
-            return ''
+            return ""
 
     # Extract math formula
     def extract_math(text):
@@ -81,16 +83,18 @@ async def ChunkByMarkdown(fpath:str):
         if current_heading:
             combined_text = "\n".join(buffer).strip()
             math_found = extract_math(combined_text)
-            rows.append({
-                "chapter_title": current_chapter,
-                "heading_text": current_heading,
-                "heading_level": current_level,
-                "content": combined_text,
-                "math_formula": math_found if math_found else None
-            })
+            rows.append(
+                {
+                    "chapter_title": current_chapter,
+                    "heading_text": current_heading,
+                    "heading_level": current_level,
+                    "content": combined_text,
+                    "math_formula": math_found if math_found else None,
+                }
+            )
 
     for node in document.children:
-        if node.__class__.__name__ == 'Heading':
+        if node.__class__.__name__ == "Heading":
             if node.level == 1:  # #
                 if current_heading:
                     save_buffer()
@@ -101,14 +105,18 @@ async def ChunkByMarkdown(fpath:str):
                 if current_heading:
                     save_buffer()
                 try:
-                    current_heading =node.children[0].content
+                    current_heading = node.children[0].content
                 except Exception as e:
                     print(f"Error chunking by markdown: {e}")
                 current_level = node.level
                 buffer = []
         elif current_heading:
-            if hasattr(node, 'children'):
-                text = ''.join(child.content for child in node.children if hasattr(child, 'content'))
+            if hasattr(node, "children"):
+                text = "".join(
+                    child.content
+                    for child in node.children
+                    if hasattr(child, "content")
+                )
                 if text.strip():
                     buffer.append(text)
 
@@ -119,28 +127,33 @@ async def ChunkByMarkdown(fpath:str):
 
     return df
 
+
 async def ConvertDftoDocument(df):
     documents = []
 
     for _, row in df.iterrows():
-        content_text = row['content'] if pd.notna(row['content']) else ""
+        content_text = row["content"] if pd.notna(row["content"]) else ""
 
         # Safely handle math_formula
         math_formula = ""
-        if pd.notna(row['math_formula']):
+        if pd.notna(row["math_formula"]):
             try:
-                math_formula_list = ast.literal_eval(row['math_formula'])
+                math_formula_list = ast.literal_eval(row["math_formula"])
                 if isinstance(math_formula_list, list):
-                    math_formula = ", ".join(str(item) for item in math_formula_list)  # convert list to comma-separated string
+                    math_formula = ", ".join(
+                        str(item) for item in math_formula_list
+                    )  # convert list to comma-separated string
                 else:
                     math_formula = str(math_formula_list)  # fallback to string
             except (ValueError, SyntaxError):
                 math_formula = ""
 
         metadata = {
-            "chapter_title": row['chapter_title'],
-            "heading_text": row['heading_text'],
-            "heading_level": int(row['heading_level']) if pd.notna(row['heading_level']) else -1,  # ensure int
+            "chapter_title": row["chapter_title"],
+            "heading_text": row["heading_text"],
+            "heading_level": (
+                int(row["heading_level"]) if pd.notna(row["heading_level"]) else -1
+            ),  # ensure int
             "math_formula": math_formula,  # string, not list
         }
 
@@ -148,5 +161,5 @@ async def ConvertDftoDocument(df):
             page_content=content_text,
             metadata=metadata,
         )
-        documents.append(doc) 
+        documents.append(doc)
     return documents

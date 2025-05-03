@@ -11,6 +11,7 @@ dependencies = [
     "langchain>=0.3.24",
     "langchain-chroma>=0.2.3",
     "langchain-community>=0.3.23",
+    "langchain-google-genai>=2.1.4",
     "langchain-huggingface>=0.1.2",
     "marker-pdf>=1.6.2",
     "mistletoe>=1.4.0",
