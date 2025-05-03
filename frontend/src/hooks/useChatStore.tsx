@@ -7,9 +7,9 @@ import {
 } from "@/app/data";
 import { create } from "zustand";
 
-export interface Example{
+export interface Example {
   name: string;
-    url: string;
+  url: string;
 }
 
 interface State {
@@ -22,9 +22,9 @@ interface State {
   hasInitialResponse: boolean;
 }
 
-interface Actions{
-    selectedUser: UserData;
-      setSelectedExample: (example: Example) => void;
+interface Actions {
+  selectedUser: UserData;
+  setSelectedExample: (example: Example) => void;
   setExamples: (examples: Example[]) => void;
   setInput: (input: string) => void;
   handleInputChange: (

@@ -12,25 +12,25 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
-  rules: {
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
-      'prettier/prettier': [
-        'warn',
+    rules: {
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "prettier/prettier": [
+        "warn",
         {
-          arrowParens: 'always',
+          arrowParens: "always",
           semi: false,
-          trailingComma: 'none',
+          trailingComma: "none",
           tabWidth: 2,
-          endOfLine: 'auto',
+          endOfLine: "auto",
           useTabs: false,
           singleQuote: true,
           printWidth: 120,
-          jsxSingleQuote: true
-        }
-      ]
+          jsxSingleQuote: true,
+        },
+      ],
     },
-  }
+  },
 ];
 
 export default eslintConfig;

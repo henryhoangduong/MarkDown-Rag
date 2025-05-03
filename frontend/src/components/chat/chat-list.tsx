@@ -4,7 +4,14 @@ import React, { useRef, useEffect } from "react";
 import ChatBottombar from "./chat-bottombar";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChatMessageList } from "../ui/chat/chat-message-list";
-import { ChatBubble,ChatBubbleAvatar,ChatBubbleMessage,ChatBubbleActionWrapper,ChatBubbleTimestamp, ChatBubbleAction } from "../ui/chat/chat-bubble";
+import {
+  ChatBubble,
+  ChatBubbleAvatar,
+  ChatBubbleMessage,
+  ChatBubbleActionWrapper,
+  ChatBubbleTimestamp,
+  ChatBubbleAction,
+} from "../ui/chat/chat-bubble";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { Forward, Heart } from "lucide-react";
 

@@ -4,8 +4,20 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Bot, Send } from "lucide-react";
 import { ChatMessageList } from "../ui/chat/chat-message-list";
-import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage, ChatBubbleActionWrapper, ChatBubbleTimestamp, ChatBubbleAction } from "../ui/chat/chat-bubble";
-import { ExpandableChat, ExpandableChatHeader, ExpandableChatBody, ExpandableChatFooter } from "../ui/chat/expandable-chat";
+import {
+  ChatBubble,
+  ChatBubbleAvatar,
+  ChatBubbleMessage,
+  ChatBubbleActionWrapper,
+  ChatBubbleTimestamp,
+  ChatBubbleAction,
+} from "../ui/chat/chat-bubble";
+import {
+  ExpandableChat,
+  ExpandableChatHeader,
+  ExpandableChatBody,
+  ExpandableChatFooter,
+} from "../ui/chat/expandable-chat";
 import { ChatInput } from "../ui/chat/chat-input";
 import { AnimatePresence, motion } from "framer-motion";
 

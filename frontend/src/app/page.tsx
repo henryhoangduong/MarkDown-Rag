@@ -7,7 +7,7 @@ import { ChatBubbleAction } from "@/components/ui/chat/chat-bubble";
 import { ChatBubbleMessage } from "@/components/ui/chat/chat-bubble";
 import { ChatInput } from "@/components/ui/chat/chat-input";
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
-import useChatStore  from "@/hooks/useChatStore";
+import useChatStore from "@/hooks/useChatStore";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   CopyIcon,
@@ -36,7 +36,6 @@ const ChatAiIcons = [
 ];
 
 export default function Page() {
-  
   const messages = useChatStore((state) => state.chatBotMessages);
   const setMessages = useChatStore((state) => state.setchatBotMessages);
   const selectedUser = useChatStore((state) => state.selectedUser);
@@ -119,21 +118,23 @@ export default function Page() {
     inputRef.current?.click();
   };
 
-const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-  const file = event.target.files?.[0];
-  if (file) {
-    const formData = new FormData();
-    formData.append("file", file);
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
 
-    const res = await fetch("/api/files", {
-      method: "POST",
-      body: formData,
-    });
-    if (res.status == 200) {
-      toast.success("File uploaded")
+      const res = await fetch("/api/files", {
+        method: "POST",
+        body: formData,
+      });
+      if (res.status == 200) {
+        toast.success("File uploaded");
+      }
     }
-  }
-};
+  };
   return (
     <div className="flex h-full w-full flex-col">
       <div className="flex-1 w-full overflow-y-auto bg-muted/40">
