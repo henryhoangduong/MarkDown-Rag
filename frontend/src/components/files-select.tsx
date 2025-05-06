@@ -14,7 +14,7 @@ import {
 import UseFileName from "../hooks/use-file-name";
 const FileSelect = () => {
   const router = useRouter();
-  const fileName = UseFileName()
+  const fileName = UseFileName();
   const handleClick = (value: string) => {
     router.push(value);
   };

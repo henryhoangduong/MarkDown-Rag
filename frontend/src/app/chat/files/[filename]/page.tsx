@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
 
 const ChatAiIcons = [
   {
@@ -45,7 +46,7 @@ export default function Page() {
   const input = useChatStore((state) => state.input);
   const setInput = useChatStore((state) => state.setInput);
   const handleInputChange = useChatStore((state) => state.handleInputChange);
-
+  const fileName = UseFileName();
   const [isLoading, setisLoading] = useState(false);
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -67,6 +68,27 @@ export default function Page() {
       handleSendMessage(e as unknown as React.FormEvent<HTMLFormElement>);
     }
   };
+  const { mutate, isPending } = useMutation({
+    mutationFn: (message: string) =>
+      fetch(`/api/chat/files?fileName=${fileName}`, {
+        method: "POST",
+        body: JSON.stringify({
+          message:message,
+        }),
+      }).then((res) => res.json()),
+    onSuccess: (data) => {
+      setMessages((messages) => [
+        ...messages,
+        {
+          id: messages.length + 1,
+          avatar: "",
+          name: "ChatBot",
+          role: "ai",
+          message: data.response.answer,
+        },
+      ]);
+    },
+  });
 
   const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     setisLoading(true);
@@ -85,22 +107,8 @@ export default function Page() {
     ]);
     setInput("");
     formRef.current?.reset();
-    const res = await fetch("/api/chat/files", {
-      method: "POST",
-    });
-    const data = await res.json();
-    if (data.response) {
-      setMessages((messages) => [
-        ...messages,
-        {
-          id: messages.length + 1,
-          avatar: "",
-          name: "ChatBot",
-          role: "ai",
-          message: data.response.answer,
-        },
-      ]);
-    }
+    if (isPending) return;
+    mutate(input);
     setisLoading(false);
   };
 
@@ -179,7 +187,7 @@ export default function Page() {
                 </motion.div>
               );
             })}
-            {isLoading && (
+            {isPending && (
               <div className="ml-5 flex items-center space-x-2">
                 <MessageLoading />
               </div>

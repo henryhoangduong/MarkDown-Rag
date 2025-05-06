@@ -26,7 +26,6 @@ const items = [
 ];
 
 const DesktopNavbar = () => {
-
   const { data, isPending } = useQuery({
     queryKey: ["files"],
     queryFn: async () =>
@@ -44,9 +43,16 @@ const DesktopNavbar = () => {
         <div className="flex h-[80px] min-h-[60px] items-center gap-x-4">
           <Logo />
           <div className="flex h-full ">
-            {!isPending && items.map((item, index) => (
-              <NavbarItem key={index} link={item.label=="Chat"?item.link +data[0].name:item.link} label={item.label} />
-            ))}
+            {!isPending &&
+              items.map((item, index) => (
+                <NavbarItem
+                  key={index}
+                  link={
+                    item.label == "Chat" ? item.link + data[0].name : item.link
+                  }
+                  label={item.label}
+                />
+              ))}
           </div>
         </div>
         <div className="flex items-center gap-2">
