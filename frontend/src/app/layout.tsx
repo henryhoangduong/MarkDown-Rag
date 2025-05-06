@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { cookies } from "next/headers";
 import { ThemeProvider } from "@/components/theme-provider";
-import Link from "next/link";
-import ChatSupport from "@/components/chat/chat-support";
-import Examples from "@/components/examples";
 import { Toaster } from "sonner";
 import Navbar from "@/components/navbar";
+import RootProvider from "@/components/providers/root-provider";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -39,7 +37,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <RootProvider>
           <Navbar />
           <main className="flex h-[calc(85dvh)] flex-col items-center justify-center md:px-24 gap-4">
             <div className="w-full max-h-screen h-[90%]  text-sm flex">
@@ -47,7 +45,7 @@ export default function RootLayout({
               <Toaster />
             </div>
           </main>
-        </ThemeProvider>
+        </RootProvider>
       </body>
     </html>
   );

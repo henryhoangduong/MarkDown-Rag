@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useChatStore, { Example } from "@/hooks/useChatStore";
+import useChatStore, { Example } from "@/hooks/use-chat-store";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 

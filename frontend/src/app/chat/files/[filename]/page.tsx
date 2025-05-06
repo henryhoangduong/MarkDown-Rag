@@ -1,5 +1,7 @@
 "use client";
 
+import FileSelect from "@/components/files-select";
+import UseFileName from "@/hooks/use-file-name";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ChatBubble } from "@/components/ui/chat/chat-bubble";
@@ -8,7 +10,7 @@ import { ChatBubbleMessage } from "@/components/ui/chat/chat-bubble";
 import { ChatInput } from "@/components/ui/chat/chat-input";
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
 import MessageLoading from "@/components/ui/chat/message-loading";
-import useChatStore from "@/hooks/useChatStore";
+import useChatStore from "@/hooks/use-chat-store";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   CopyIcon,
@@ -86,20 +88,20 @@ export default function Page() {
     const res = await fetch("/api/chat/files", {
       method: "POST",
     });
-    const data = await res.json()
+    const data = await res.json();
     if (data.response) {
       setMessages((messages) => [
         ...messages,
-          {
-            id: messages.length + 1,
-            avatar: "",
-            name: "ChatBot",
-            role: "ai",
-            message: data.response.answer,
-          },
-        ]);
+        {
+          id: messages.length + 1,
+          avatar: "",
+          name: "ChatBot",
+          role: "ai",
+          message: data.response.answer,
+        },
+      ]);
     }
-    setisLoading(false)
+    setisLoading(false);
   };
 
   const handleClick = () => {
@@ -107,6 +109,7 @@ export default function Page() {
   };
   return (
     <div className="flex h-full w-full flex-col">
+      <FileSelect />
       <div className="flex-1 w-full overflow-y-auto bg-muted/40">
         <ChatMessageList ref={messagesContainerRef}>
           {/* Chat messages */}
@@ -176,10 +179,11 @@ export default function Page() {
                 </motion.div>
               );
             })}
-            {isLoading && 
+            {isLoading && (
               <div className="ml-5 flex items-center space-x-2">
                 <MessageLoading />
-              </div>}
+              </div>
+            )}
           </AnimatePresence>
         </ChatMessageList>
       </div>

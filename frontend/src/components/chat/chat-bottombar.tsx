@@ -15,7 +15,7 @@ import { Message, loggedInUserData } from "@/app/data";
 import { EmojiPicker } from "../emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { ChatInput } from "../ui/chat/chat-input";
-import useChatStore from "@/hooks/useChatStore";
+import useChatStore from "@/hooks/use-chat-store";
 
 interface ChatBottombarProps {
   isMobile: boolean;

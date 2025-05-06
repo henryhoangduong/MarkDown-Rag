@@ -39,8 +39,8 @@ export async function GET(request: Request) {
         },
       );
     }
-
-    return new Response(res.body, {
+    const data = await res.json();
+    return new Response(JSON.stringify(data), {
       status: 200,
       headers: {
         "Content-Type": res.headers.get("Content-Type") || "application/json",

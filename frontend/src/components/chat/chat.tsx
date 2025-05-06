@@ -2,7 +2,7 @@ import { Message, UserData } from "@/app/data";
 import ChatTopbar from "./chat-topbar";
 import { ChatList } from "./chat-list";
 import React, { useEffect, useState } from "react";
-import useChatStore from "@/hooks/useChatStore";
+import useChatStore from "@/hooks/use-chat-store";
 import ChatBottombar from "./chat-bottombar";
 
 interface ChatProps {
